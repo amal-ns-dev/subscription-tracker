@@ -15,8 +15,8 @@ const subscriptionSchema = new mongoose.Schema({
     },
     currency: {
         type: String,
-        enum: ['USD', 'EUR', 'GBP'],
-        default: 'USD',
+        enum: ['USD', 'EUR', 'GBP', 'INR'],
+        default: 'INR',
     },
     frequency: {
         type: String,
@@ -78,9 +78,8 @@ subscriptionSchema.pre('save', function(next) {
         this.status = 'expired';
     }
 
-    next();
 });
 
-const Subscription = mongoose.model('Subscription', userSchema);
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
-export default User;
+export default Subscription;

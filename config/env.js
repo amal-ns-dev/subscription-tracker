@@ -7,5 +7,7 @@ export const {
     NODE_ENV,
     DB_URI,
     JWT_SECRET,
-    JWT_EXPIRES_IN 
+    JWT_EXPIRES_IN,
+    QSTASH_TOKEN, QSTASH_URL,
+    SERVER_URL
 } = process.env;
