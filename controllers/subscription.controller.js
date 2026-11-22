@@ -26,6 +26,72 @@ export const createSubscription = async (req, res, next) => {
     }
 }
 
+export const getSubscriptionById = async (req, res, next) => {
+    try {
+        if (req.user.id != req.params.userId) {
+            const error = new Error('You are not the owner of this account');
+            error.status = 401;
+            throw error;
+        }
+
+        const subscriptionId = req.params.subscriptionId;
+
+        if (!subscriptionId) {
+            const error = new Error('Subscription Id is missing in the request');
+            error.status = 400;
+            throw error;
+        }
+
+        const subscription = await Subscription.findById(subscriptionId);
+
+        if (!subscription) {
+            const error = new Error('Subscription not found');
+            error.status = 404;
+            throw error;
+        }
+        res.status(200).json({success: true, data: subscription});
+
+    } catch(err) {
+        next(err);
+    }
+}
+
+export const deleteSubscriptionById = async (req, res, next) => {
+    try {
+        if (req.user.id != req.params.userId) {
+            const error = new Error('You are not the owner of this account');
+            error.status = 401;
+            throw error;
+        }
+
+        const subscriptionId = req.params.subscriptionId;
+
+        if (!subscriptionId) {
+            const error = new Error('Subscription Id is missing in the request');
+            error.status = 400;
+            throw error;
+        }
+
+        const deletedSubscription = await Subscription.findByIdAndDelete(subscriptionId);
+
+        if (!deletedSubscription) {
+            return res.status(404).json({
+                success: false,
+                message: 'Subscription not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Subscription deleted successfully'
+        });
+
+    } catch(err) {
+        next(err);
+    }
+}
+
+
 export const getUserSubscriptions = async (req, res, next) => {
     try {
         if (req.user.id != req.params.id) {
